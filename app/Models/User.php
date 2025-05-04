@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\User\UserCreated;
+use App\Events\User\UserDeleted;
+use App\Events\User\UserUpdated;
 use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,14 +19,22 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject {
     use HasFactory, SoftDeletes, Notifiable, Filterable;
 
+    protected $dispatchesEvents = [
+        'created' => UserCreated::class,
+        'updated' => UserUpdated::class,
+        'deleted' => UserDeleted::class
+    ];
     public $guarded = [];
 
     protected $keyType = 'string';
+
     public $incrementing = false;
+
     public function getJWTIdentifier() {
         return $this->getKey();
     }
     public function getJWTCustomClaims() {
         return [];
     }
+
 }

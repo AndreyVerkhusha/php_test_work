@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Filters\UserFilter;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateRequest;
-use App\Models\User;
 use App\Services\User\UserService;
-use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class UserController extends Controller {
     protected $userService;
