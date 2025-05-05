@@ -14,11 +14,36 @@ class UserFilter extends AbstractFilter {
 
     protected function getCallbacks(): array {
         return [
-            self::PHONE => [$this, 'phone'],
+            self::PHONE => [$this, 'getPhone'],
+            self::LAST_NAME => [$this, 'getLastName'],
+            self::FIRST_NAME => [$this, 'getFirstName'],
+            self::MIDDLE_NAME => [$this, 'getMiddleName'],
+            self::CREATED_AT => [$this, 'getCreatedAt']
         ];
     }
 
-    public function phone(Builder $builder, $value) {
-        $builder->where(self::PHONE, $value);
+    public function getPhone(Builder $builder, $value) {
+        $builder->where(self::PHONE, 'LIKE', "%$value%");
+    }
+
+    public function getLastName(Builder $builder, $value) {
+        $builder->where(self::LAST_NAME, 'LIKE', "%$value%");
+    }
+
+    public function getFirstName(Builder $builder, $value) {
+        $builder->where(self::FIRST_NAME, 'LIKE', "%$value%");
+    }
+
+    public function getMiddleName(Builder $builder, $value) {
+        $builder->where(self::MIDDLE_NAME, 'LIKE', "%$value%");
+    }
+
+    public function getCreatedAt(Builder $builder, $value) {
+        if (str_contains($value, ' ')) {
+            $builder->where(self::CREATED_AT, '=', $value);
+        } else {
+            $builder->where(self::CREATED_AT, '>=', $value . ' 00:00:00')
+                ->where(self::CREATED_AT, '<=', $value . ' 23:59:59');
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateRequest;
+use App\Http\Requests\User\UserRequest;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -15,7 +16,7 @@ class UserController extends Controller {
         $this->userService = $userService;
     }
 
-    public function index(Request $request) {
+    public function index(UserRequest $request) {
         return $this->userService->index($request);
     }
 
@@ -23,8 +24,8 @@ class UserController extends Controller {
         return $this->userService->store($request);
     }
 
-    public function show($id) {
-        return $this->userService->show($id);
+    public function show($id, Request $request) {
+        return $this->userService->show($id, $request);
     }
 
     public function update(UpdateRequest $request, string $id) {

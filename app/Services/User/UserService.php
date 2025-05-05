@@ -2,28 +2,52 @@
 
 namespace App\Services\User;
 
+use App\Http\Filters\User\UserFilter;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateRequest;
+use App\Http\Requests\User\UserRequest;
 use App\Models\User;
+use App\Services\Xml\XmlResponse;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class UserService {
 
-    public function index(Request $request) {
+    public int $cacheTtl = 30; // seconds
+
+    public function index(UserRequest $request) {
+        $dataValidated = $request->validated();
+
         $perPage = $request->query('per_page', 10);
         $page = $request->query('page', 1);
+        $format = $request->query('format', 'json');
 
-        $users = User::paginate($perPage, ['*'], 'page', $page);
+        $filter = app()->make(UserFilter::class, ['queryParams' => array_filter($dataValidated)]);
 
-        return response()->json([
+        $usersWithFilterAndSort = User::filter($filter)
+            ->sort($dataValidated)
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        $cacheKey = 'users.all.page.' . $page . '.per_page.' . $perPage . '.filter.' . json_encode($dataValidated);
+        $users = Cache::remember($cacheKey, $this->cacheTtl, function () use ($usersWithFilterAndSort) {
+            return $usersWithFilterAndSort;
+        });
+
+        $data = [
             'data' => $users->items(),
             'perPage' => $perPage,
             'currentPage' => $page,
             'totalPages' => $users->lastPage(),
             'totalUsers' => $users->total()
-        ]);
+        ];
+
+        if ($format === 'xml') {
+            return XmlResponse::arrayToXml($data);
+        }
+
+        return response()->json($data);
     }
 
     public function store(CreateUserRequest $request) {
@@ -41,13 +65,23 @@ class UserService {
                 'token' => $token
             ], 201);
         } catch (QueryException $e) {
-
             return $this->handleQueryException($e);
         }
     }
 
-    public function show($id) {
-        return response()->json(User::findOrFail($id));
+    public function show($id, Request $request) {
+        $format = $request->query('format', 'json');
+        $cacheKey = 'user.' . $id;
+
+        $user = Cache::remember($cacheKey, $this->cacheTtl, function () use ($id) {
+            return User::findOrFail($id);
+        });
+
+        if ($format === 'xml') {
+            return XmlResponse::arrayToXml($user->toArray());
+        }
+
+        return response()->json($user);
     }
 
     public function update(UpdateRequest $request, $id) {
@@ -59,7 +93,12 @@ class UserService {
     }
 
     public function trashed() {
-        $trashedUsers = User::onlyTrashed()->get();
+        $cacheKey = 'users.trashed';
+
+        $trashedUsers = Cache::remember($cacheKey, $this->cacheTtl, function () {
+            return User::onlyTrashed()->get();
+        });
+
         return response()->json($trashedUsers);
     }
 

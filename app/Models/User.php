@@ -6,6 +6,7 @@ use App\Events\User\UserCreated;
 use App\Events\User\UserDeleted;
 use App\Events\User\UserUpdated;
 use App\Models\Traits\Filterable;
+use App\Models\Traits\Sortable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -17,7 +18,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  */
 
 class User extends Authenticatable implements JWTSubject {
-    use HasFactory, SoftDeletes, Notifiable, Filterable;
+    use HasFactory, SoftDeletes, Notifiable, Filterable, Sortable;
 
     protected $dispatchesEvents = [
         'created' => UserCreated::class,
