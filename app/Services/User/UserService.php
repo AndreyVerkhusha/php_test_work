@@ -61,7 +61,6 @@ class UserService {
             $token = auth()->login($user);
 
             return response()->json([
-                'message' => 'User  created successfully!',
                 'user' => $validate,
                 'token' => $token
             ], 201);
