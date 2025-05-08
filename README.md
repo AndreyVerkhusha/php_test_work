@@ -97,7 +97,8 @@ php artisan migrate --seed
 php artisan serve
 ```
 
-Теперь API доступно по адресу [http://localhost:8000](http://localhost:8000).
+Теперь API доступно по адресу [http://localhost:8000](http://localhost:8000). </br>
+Swagger доступен по адресу [http://localhost:8000/swagger](http://localhost:8000/swagger).
 
 ## Запуск с использованием Docker
 
