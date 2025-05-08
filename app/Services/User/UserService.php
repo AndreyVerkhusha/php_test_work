@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 
 class UserService {
 
-    public int $cacheTtl = 30; // seconds
+    public int $cacheTtl = 30; // cache time to live
 
     public function index(UserRequest $request) {
         $dataValidated = $request->validated();
