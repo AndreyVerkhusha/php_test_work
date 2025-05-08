@@ -2,10 +2,11 @@
 
 namespace App\Services\Xml;
 
+use Illuminate\Http\Response;
 use SimpleXMLElement;
 
 class XmlResponse {
-    public static function arrayToXml($data, SimpleXMLElement $xmlData = null) {
+    public static function arrayToXml(array $data, SimpleXMLElement $xmlData = null): Response {
         if ($xmlData === null) {
             $xmlData = new SimpleXMLElement('<root/>');
         }

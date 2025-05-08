@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Services\Auth\AuthService;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
 class AuthController extends Controller {
@@ -13,7 +14,7 @@ class AuthController extends Controller {
         $this->authService = $authService;
     }
 
-    public function login(FormRequest $request) {
+    public function login(FormRequest $request): JsonResponse {
         return $this->authService->login($request);
     }
 
@@ -21,7 +22,7 @@ class AuthController extends Controller {
         return $this->authService->logout();
     }
 
-    public function me() {
+    public function me(): JsonResponse {
         return $this->authService->me();
     }
 }

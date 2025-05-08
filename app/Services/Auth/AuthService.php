@@ -4,15 +4,16 @@ namespace App\Services\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
 
 class AuthService {
-    public function login(FormRequest $request) {
+    public function login(FormRequest $request): JsonResponse {
         $credentials = $request->only('email', 'password');
         try {
             if ($token = auth()->attempt($credentials)) {
                 return $this->respondWithToken($token);
             } else {
-                return response()->json(["message" => 'User not found'], 404);
+                return response()->json(["message" => 'User  not found'], 404);
             }
 
         } catch (\Exception $exception) {
@@ -20,16 +21,16 @@ class AuthService {
         }
     }
 
-    public function logout() {
+    public function logout(): JsonResponse {
         Auth::logout();
         return response()->json(['message' => 'Successfully logged out']);
     }
 
-    public function me() {
+    public function me(): JsonResponse {
         return response()->json(auth()->user());
     }
 
-    protected function respondWithToken($token) {
+    protected function respondWithToken(string $token): JsonResponse {
         $user = auth()->user();
         $ttl = config('jwt.ttl') * 600;
 
@@ -40,7 +41,7 @@ class AuthService {
             'email' => $user->email,
             'phone' => $user->phone,
             'expires_in' => $ttl,
-            'token' => (string)$token,
+            'token' => $token,
         ]);
     }
 }

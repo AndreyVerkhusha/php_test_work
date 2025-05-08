@@ -9,6 +9,7 @@ use App\Http\Requests\User\UserRequest;
 use App\Models\User;
 use App\Services\Xml\XmlResponse;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -50,7 +51,7 @@ class UserService {
         return response()->json($data);
     }
 
-    public function store(CreateUserRequest $request) {
+    public function store(CreateUserRequest $request): JsonResponse {
         try {
             $validate = $request->validated();
             $validate['id'] = Str::uuid();
@@ -84,7 +85,7 @@ class UserService {
         return response()->json($user);
     }
 
-    public function update(UpdateRequest $request, $id) {
+    public function update(UpdateRequest $request, $id): JsonResponse {
         $data = $request->validated();
         $user = User::findOrFail($id);
         $user->update($data);
@@ -92,7 +93,7 @@ class UserService {
         return response()->json($user->fresh());
     }
 
-    public function trashed() {
+    public function trashed(): JsonResponse {
         $cacheKey = 'users.trashed';
 
         $trashedUsers = Cache::remember($cacheKey, $this->cacheTtl, function () {
@@ -102,7 +103,7 @@ class UserService {
         return response()->json($trashedUsers);
     }
 
-    public function handleDestroy($id, $force = false) {
+    public function handleDestroy($id, $force = false): JsonResponse {
         $user = User::withTrashed()->findOrFail($id);
 
         if ($force) {
@@ -114,7 +115,7 @@ class UserService {
         return $this->messageResponse('User  deleted successfully!');
     }
 
-    public function handleBulkDestroy($request, $force = false) {
+    public function handleBulkDestroy($request, $force = false): JsonResponse {
         $userIds = $request->input('ids');
         $userIds = array_map('strval', $userIds);
 
@@ -131,14 +132,14 @@ class UserService {
         return $this->messageResponse('User deleted successfully!');
     }
 
-    public function restore($id) {
+    public function restore($id): JsonResponse {
         $user = User::onlyTrashed()->findOrFail($id);
         $user->restore();
 
         return response()->json($user->fresh());
     }
 
-    public function handleRestore($request, $id = null) {
+    public function handleRestore($request, $id = null): JsonResponse {
         if ($id !== null) {
             $user = User::onlyTrashed()->findOrFail($id);
             $user->restore();

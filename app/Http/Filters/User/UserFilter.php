@@ -22,23 +22,23 @@ class UserFilter extends AbstractFilter {
         ];
     }
 
-    public function getPhone(Builder $builder, $value) {
+    public function getPhone(Builder $builder, string $value) {
         $builder->where(self::PHONE, 'LIKE', "%$value%");
     }
 
-    public function getLastName(Builder $builder, $value) {
+    public function getLastName(Builder $builder, string $value) {
         $builder->where(self::LAST_NAME, 'LIKE', "%$value%");
     }
 
-    public function getFirstName(Builder $builder, $value) {
+    public function getFirstName(Builder $builder, string $value) {
         $builder->where(self::FIRST_NAME, 'LIKE', "%$value%");
     }
 
-    public function getMiddleName(Builder $builder, $value) {
+    public function getMiddleName(Builder $builder, string $value) {
         $builder->where(self::MIDDLE_NAME, 'LIKE', "%$value%");
     }
 
-    public function getCreatedAt(Builder $builder, $value) {
+    public function getCreatedAt(Builder $builder, string $value) {
         if (str_contains($value, ' ')) {
             $builder->where(self::CREATED_AT, '=', $value);
         } else {

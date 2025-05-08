@@ -35,8 +35,4 @@ trait Sortable {
 
         return $sortFields;
     }
-
-    protected function getSortDirection(array $dataValidated) {
-
-    }
 }
