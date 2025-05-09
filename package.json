@@ -4,7 +4,8 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "serve": "php artisan serve"
+        "serve": "php artisan serve",
+        "format": "php vendor/bin/pint --config .pint.json"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

@@ -10,6 +10,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class History extends Model {
     use HasFactory;
-    public $guarded = [];
 
+    public $guarded = [];
 }

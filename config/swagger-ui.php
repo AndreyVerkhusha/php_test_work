@@ -13,7 +13,7 @@ return [
             /*
              * The title of the page where the swagger file is served.
              */
-            'title' => env('APP_NAME') . ' - Swagger',
+            'title' => env('APP_NAME').' - Swagger',
 
             /*
              * The versions of the swagger file. The key is the version name and the value is the path to the file.
@@ -54,11 +54,11 @@ return [
              * The oauth configuration for the swagger file.
              */
             'oauth' => [
-                'token_path' => 'oauth/token',
-                'refresh_path' => 'oauth/token',
+                'token_path'         => 'oauth/token',
+                'refresh_path'       => 'oauth/token',
                 'authorization_path' => 'oauth/authorize',
 
-                'client_id' => env('SWAGGER_UI_OAUTH_CLIENT_ID'),
+                'client_id'     => env('SWAGGER_UI_OAUTH_CLIENT_ID'),
                 'client_secret' => env('SWAGGER_UI_OAUTH_CLIENT_SECRET'),
             ],
 

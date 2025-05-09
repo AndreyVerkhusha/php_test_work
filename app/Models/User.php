@@ -16,15 +16,15 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 /**
  * @mixin \Eloquent
  */
-
 class User extends Authenticatable implements JWTSubject {
-    use HasFactory, SoftDeletes, Notifiable, Filterable, Sortable;
+    use Filterable, HasFactory, Notifiable, SoftDeletes, Sortable;
 
     protected $dispatchesEvents = [
         'created' => UserCreated::class,
         'updated' => UserUpdated::class,
-        'deleted' => UserDeleted::class
+        'deleted' => UserDeleted::class,
     ];
+
     public $guarded = [];
 
     protected $keyType = 'string';
@@ -34,8 +34,8 @@ class User extends Authenticatable implements JWTSubject {
     public function getJWTIdentifier() {
         return $this->getKey();
     }
+
     public function getJWTCustomClaims() {
         return [];
     }
-
 }

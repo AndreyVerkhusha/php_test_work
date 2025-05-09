@@ -7,15 +7,11 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserCreated
-{
+class UserCreated {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $user;
 
-    /**
-     * @param $user
-     */
     public function __construct($user) {
         $this->user = $user;
     }
@@ -25,8 +21,7 @@ class UserCreated
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array
-    {
+    public function broadcastOn(): array {
         return [
             new PrivateChannel('channel-name'),
         ];

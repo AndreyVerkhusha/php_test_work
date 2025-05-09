@@ -7,18 +7,22 @@ use Illuminate\Database\Eloquent\Builder;
 
 class UserFilter extends AbstractFilter {
     public const PHONE = 'phone';
+
     public const LAST_NAME = 'last_name';
+
     public const FIRST_NAME = 'first_name';
+
     public const MIDDLE_NAME = 'middle_name';
+
     public const CREATED_AT = 'created_at';
 
     protected function getCallbacks(): array {
         return [
-            self::PHONE => [$this, 'getPhone'],
-            self::LAST_NAME => [$this, 'getLastName'],
-            self::FIRST_NAME => [$this, 'getFirstName'],
+            self::PHONE       => [$this, 'getPhone'],
+            self::LAST_NAME   => [$this, 'getLastName'],
+            self::FIRST_NAME  => [$this, 'getFirstName'],
             self::MIDDLE_NAME => [$this, 'getMiddleName'],
-            self::CREATED_AT => [$this, 'getCreatedAt']
+            self::CREATED_AT  => [$this, 'getCreatedAt'],
         ];
     }
 
@@ -42,8 +46,8 @@ class UserFilter extends AbstractFilter {
         if (str_contains($value, ' ')) {
             $builder->where(self::CREATED_AT, '=', $value);
         } else {
-            $builder->where(self::CREATED_AT, '>=', $value . ' 00:00:00')
-                ->where(self::CREATED_AT, '<=', $value . ' 23:59:59');
+            $builder->where(self::CREATED_AT, '>=', $value.' 00:00:00')
+                ->where(self::CREATED_AT, '<=', $value.' 23:59:59');
         }
     }
 }

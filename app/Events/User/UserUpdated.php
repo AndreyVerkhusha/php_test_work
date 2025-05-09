@@ -12,9 +12,6 @@ class UserUpdated {
 
     public $user;
 
-    /**
-     * @param $user
-     */
     public function __construct($user) {
         $this->user = $user;
     }

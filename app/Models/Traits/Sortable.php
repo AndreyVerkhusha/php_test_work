@@ -2,14 +2,13 @@
 
 namespace App\Models\Traits;
 
-
 use Illuminate\Database\Eloquent\Builder;
 
 trait Sortable {
     public function scopeSort(Builder $builder, array $dataValidated) {
         $sortFields = $this->getSortFields($dataValidated);
 
-        foreach($sortFields as $field => $direction) {
+        foreach ($sortFields as $field => $direction) {
             $builder->orderBy($field, $direction);
         }
 
@@ -22,14 +21,14 @@ trait Sortable {
         if (isset($dataValidated['sort_field'])) {
             $sortField = $dataValidated['sort_field'];
 
-            list($field, $direction) = explode(",", $sortField);
+            [$field, $direction] = explode(',', $sortField);
 
             if (in_array($direction, ['asc', 'desc'])) {
                 $sortFields[$field] = $direction;
             }
         }
 
-        if(empty($sortFields)) {
+        if (empty($sortFields)) {
             $sortFields['created_at'] = 'asc';
         }
 

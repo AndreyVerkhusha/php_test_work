@@ -15,15 +15,14 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class UserService {
-
     public int $cacheTtl = 30; // cache time to live
 
     public function index(UserRequest $request) {
         $dataValidated = $request->validated();
 
         $perPage = $request->query('per_page', 10);
-        $page = $request->query('page', 1);
-        $format = $request->query('format', 'json');
+        $page    = $request->query('page', 1);
+        $format  = $request->query('format', 'json');
 
         $filter = app()->make(UserFilter::class, ['queryParams' => array_filter($dataValidated)]);
 
@@ -31,17 +30,17 @@ class UserService {
             ->sort($dataValidated)
             ->paginate($perPage, ['*'], 'page', $page);
 
-        $cacheKey = 'users.all.page.' . $page . '.per_page.' . $perPage . '.filter.' . json_encode($dataValidated);
-        $users = Cache::remember($cacheKey, $this->cacheTtl, function () use ($usersWithFilterAndSort) {
+        $cacheKey = 'users.all.page.'.$page.'.per_page.'.$perPage.'.filter.'.json_encode($dataValidated);
+        $users    = Cache::remember($cacheKey, $this->cacheTtl, function () use ($usersWithFilterAndSort) {
             return $usersWithFilterAndSort;
         });
 
         $data = [
-            'data' => $users->items(),
-            'perPage' => $perPage,
+            'data'        => $users->items(),
+            'perPage'     => $perPage,
             'currentPage' => $page,
-            'totalPages' => $users->lastPage(),
-            'totalUsers' => $users->total()
+            'totalPages'  => $users->lastPage(),
+            'totalUsers'  => $users->total(),
         ];
 
         if ($format === 'xml') {
@@ -53,16 +52,16 @@ class UserService {
 
     public function store(CreateUserRequest $request): JsonResponse {
         try {
-            $validate = $request->validated();
-            $validate['id'] = Str::uuid();
+            $validate             = $request->validated();
+            $validate['id']       = Str::uuid();
             $validate['password'] = bcrypt($validate['password']);
 
-            $user = User::create($validate);
+            $user  = User::create($validate);
             $token = auth()->login($user);
 
             return response()->json([
-                'user' => $validate,
-                'token' => $token
+                'user'  => $validate,
+                'token' => $token,
             ], 201);
         } catch (QueryException $e) {
             return $this->handleQueryException($e);
@@ -70,8 +69,8 @@ class UserService {
     }
 
     public function show($id, Request $request) {
-        $format = $request->query('format', 'json');
-        $cacheKey = 'user.' . $id;
+        $format   = $request->query('format', 'json');
+        $cacheKey = 'user.'.$id;
 
         $user = Cache::remember($cacheKey, $this->cacheTtl, function () use ($id) {
             return User::findOrFail($id);
