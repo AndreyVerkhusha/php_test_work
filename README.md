@@ -97,8 +97,8 @@ php artisan migrate --seed
 php artisan serve
 ```
 
-Теперь API доступно по адресу [http://localhost:8000](http://localhost:8000). </br>
-Swagger доступен по адресу [http://localhost:8000/swagger](http://localhost:8000/swagger).
+Теперь API доступно по адресу [http://127.0.0.1:8000](http://127.0.0.1:8000). </br>
+Swagger доступен по адресу [http://127.0.0.1:8000/swagger](http://127.0.0.1:8000/swagger).
 
 ## Запуск с использованием Docker
 
@@ -113,8 +113,10 @@ Swagger доступен по адресу [http://localhost:8000/swagger](http:
    ```
 
 3. После успешного запуска контейнеров, API будет доступно по адресу [http://localhost:8080](http://localhost:8080).
+   
+5. Swagger будет доступен по адерсу [http://localhost:8080/swagger](http://localhost:8080/swagger)
 
-4. Для доступа к базе данных через phpMyAdmin, перейдите по адресу http://localhost:8081.
+6. Для доступа к базе данных через phpMyAdmin, перейдите по адресу http://localhost:8081.
 
 ### Описание контейнеров
 
