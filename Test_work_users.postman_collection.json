@@ -1,0 +1,776 @@
+{
+	"info": {
+		"_postman_id": "fa7e5902-cf4d-44e0-82c4-4cacf453fed1",
+		"name": "Test work users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21245304"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"qmorar@example.com\",\r\n    \"password\": \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"test@mail.ru\",\r\n    \"password\": \"123\",\r\n    \"password_confirmation\": \"123\",\r\n    \"phone\": \"11111\",\r\n    \"last_name\": \"lastname\",\r\n    \"first_name\": \"first name\",\r\n    \"middle_name\": \"middle name\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/register",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password reset",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"xyebljadina@mail.ru\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/password/reset",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"password",
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `\r",
+							"<style type=\"text/css\">\r",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+							"    .tftable tr {background-color:#ffffff;}\r",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+							"    .tftable tr:hover {background-color:#e0ffff;}\r",
+							"</style>\r",
+							"\r",
+							"<table class=\"tftable\" border=\"1\">\r",
+							"    <tr>\r",
+							"        <th>ID</th>\r",
+							"        <th>Email</th>\r",
+							"        <th>Phone</th>\r",
+							"        <th>Last Name</th>\r",
+							"        <th>First Name</th>\r",
+							"        <th>Middle Name</th>\r",
+							"        <th>Created At</th>\r",
+							"        <th>Updated At</th>\r",
+							"        <th>Deleted At</th>\r",
+							"    </tr>\r",
+							"    \r",
+							"    {{#each response.data}}\r",
+							"        <tr>\r",
+							"            <td>{{id}}</td>\r",
+							"            <td>{{email}}</td>\r",
+							"            <td>{{phone}}</td>\r",
+							"            <td>{{last_name}}</td>\r",
+							"            <td>{{first_name}}</td>\r",
+							"            <td>{{middle_name}}</td>\r",
+							"            <td>{{created_at}}</td>\r",
+							"            <td>{{updated_at}}</td>\r",
+							"            <td>{{deleted_at}}</td>\r",
+							"        </tr>\r",
+							"    {{/each}}\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"function constructVisualizerPayload() {\r",
+							"    return {response: pm.response.json()}\r",
+							"}\r",
+							"\r",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzQ2NDQwODUxLCJleHAiOjE3NDY0NzY4NTEsIm5iZiI6MTc0NjQ0MDg1MSwianRpIjoiZlNCM1VSc3I5NDRQbmFHZiIsInN1YiI6IjQwN2Y0NDdmLTA0NjMtM2RkMS1hZTc5LTM0YmQ5YzgwNzkyMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ._eikWvzRKUJ0eaYirSlXK4mfC-9glNIGpAacwAbol14",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users?sort_field=created_at,desc",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "sort_field",
+							"value": "created_at,desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `\r",
+							"<style type=\"text/css\">\r",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+							"    .tftable tr {background-color:#ffffff;}\r",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+							"    .tftable tr:hover {background-color:#e0ffff;}\r",
+							"</style>\r",
+							"\r",
+							"<table class=\"tftable\" border=\"1\">\r",
+							"    <tr>\r",
+							"        <th>ID</th>\r",
+							"        <th>Email</th>\r",
+							"        <th>First Name</th>\r",
+							"        <th>Last Name</th>\r",
+							"        <th>Phone</th>\r",
+							"        <th>Created At</th>\r",
+							"        <th>Updated At</th>\r",
+							"    </tr>\r",
+							"    \r",
+							"    {{#each response}}\r",
+							"        <tr>\r",
+							"            <td>{{id}}</td>\r",
+							"            <td>{{email}}</td>\r",
+							"            <td>{{first_name}}</td>\r",
+							"            <td>{{last_name}}</td>\r",
+							"            <td>{{phone}}</td>\r",
+							"            <td>{{created_at}}</td>\r",
+							"            <td>{{updated_at}}</td>\r",
+							"        </tr>\r",
+							"    {{/each}}\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"function constructVisualizerPayload() {\r",
+							"    return { response: pm.response.json() }\r",
+							"}\r",
+							"\r",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzQ2NDQxNDMwLCJleHAiOjE3NDY0Nzc0MzAsIm5iZiI6MTc0NjQ0MTQzMCwianRpIjoiSUV3ODBycERkbEpqeVY5WSIsInN1YiI6IjQwN2Y0NDdmLTA0NjMtM2RkMS1hZTc5LTM0YmQ5YzgwNzkyMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.zcAhCWKG3Wk5M3DJ1QEgwSB8vNtcWioqTi2S-md_S-Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/407f447f-0463-3dd1-ae79-34bd9c807922?format=xml",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"407f447f-0463-3dd1-ae79-34bd9c807922"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "xml"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Destroy safe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL3JlZ2lzdGVyIiwiaWF0IjoxNzQ2MzUyOTM0LCJleHAiOjE3NDYzODg5MzQsIm5iZiI6MTc0NjM1MjkzNCwianRpIjoiS0R2aDdERUlzVGpUdVY1QiIsInN1YiI6IjMwZDNjMGY5LWJlZjgtNGExNS04ZjM5LTY5YmZiNjBhZTVjYyIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.xnaLVOnasIVmchJaNCViOc0VkbcFlQ3YAZnQUZfm6QI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/30d3c0f9-bef8-4a15-8f39-69bfb60ae5cc",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"30d3c0f9-bef8-4a15-8f39-69bfb60ae5cc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Force Delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL3JlZ2lzdGVyIiwiaWF0IjoxNzQ2MzQ5Mjc2LCJleHAiOjE3NDYzODUyNzYsIm5iZiI6MTc0NjM0OTI3NiwianRpIjoiblozWUhaam45MVp1dlc4OSIsInN1YiI6IjJmZmVkYjczLTA5Y2MtNGY4Mi04N2U4LWFmMzBlYjg2YWRkYiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.kM8uHSi-P5EgXbRoh2V_mBnqhkFk6hyl2ljpKGQyx18",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/2ffedb73-09cc-4f82-87e8-af30eb86addb/force",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"2ffedb73-09cc-4f82-87e8-af30eb86addb",
+						"force"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bulk destroy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL3JlZ2lzdGVyIiwiaWF0IjoxNzQ2MTY5NjkwLCJleHAiOjE3NDYyMDU2OTAsIm5iZiI6MTc0NjE2OTY5MCwianRpIjoia0N3TjZTVFlLYTlMdk1saSIsInN1YiI6IjlkY2JmM2I3LTVmZTItNGFmZi04ZTZhLTE4YWY1NjVlZjhkYSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vyaxO3gXTbZbt-Dqk6IdCMsXbBuTZc8uHSpIJb-dKt8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ids\": [\"a840d1a1-865b-423b-afbf-702702cb7954\",\"b511500e-5724-4f8e-a856-56892fc3e036\",\"9dcbf3b7-5fe2-4aff-8e6a-18af565ef8da\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/bulk-destroy",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"bulk-destroy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bulk force destroy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzQ2MTcwMzQ2LCJleHAiOjE3NDYyMDYzNDYsIm5iZiI6MTc0NjE3MDM0NiwianRpIjoiMDcyU3FZdDB2clRaZ1BTZSIsInN1YiI6IjlkY2JmM2I3LTVmZTItNGFmZi04ZTZhLTE4YWY1NjVlZjhkYSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.IDows_GtXT1p8XaLu44yrGle-agA8y1VguhmLTD94Ew",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ids\": [\"2\", \"a840d1a1-865b-423b-afbf-702702cb7954\", \"b511500e-5724-4f8e-a856-56892fc3e036\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/bulk-force",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"bulk-force"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Restore user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzQ2MTcwMzQ2LCJleHAiOjE3NDYyMDYzNDYsIm5iZiI6MTc0NjE3MDM0NiwianRpIjoiMDcyU3FZdDB2clRaZ1BTZSIsInN1YiI6IjlkY2JmM2I3LTVmZTItNGFmZi04ZTZhLTE4YWY1NjVlZjhkYSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.IDows_GtXT1p8XaLu44yrGle-agA8y1VguhmLTD94Ew",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/a840d1a1-865b-423b-afbf-702702cb7954/restore",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"a840d1a1-865b-423b-afbf-702702cb7954",
+						"restore"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bulk restore",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzQ2MTcwMzQ2LCJleHAiOjE3NDYyMDYzNDYsIm5iZiI6MTc0NjE3MDM0NiwianRpIjoiMDcyU3FZdDB2clRaZ1BTZSIsInN1YiI6IjlkY2JmM2I3LTVmZTItNGFmZi04ZTZhLTE4YWY1NjVlZjhkYSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.IDows_GtXT1p8XaLu44yrGle-agA8y1VguhmLTD94Ew",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ids\": [\"123\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/bulk-restore",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"bulk-restore"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Trashed users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL3JlZ2lzdGVyIiwiaWF0IjoxNzQ2MzUyOTM0LCJleHAiOjE3NDYzODg5MzQsIm5iZiI6MTc0NjM1MjkzNCwianRpIjoiS0R2aDdERUlzVGpUdVY1QiIsInN1YiI6IjMwZDNjMGY5LWJlZjgtNGExNS04ZjM5LTY5YmZiNjBhZTVjYyIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.xnaLVOnasIVmchJaNCViOc0VkbcFlQ3YAZnQUZfm6QI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/trashed",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"trashed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL3JlZ2lzdGVyIiwiaWF0IjoxNzQ2MzUyOTM0LCJleHAiOjE3NDYzODg5MzQsIm5iZiI6MTc0NjM1MjkzNCwianRpIjoiS0R2aDdERUlzVGpUdVY1QiIsInN1YiI6IjMwZDNjMGY5LWJlZjgtNGExNS04ZjM5LTY5YmZiNjBhZTVjYyIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.xnaLVOnasIVmchJaNCViOc0VkbcFlQ3YAZnQUZfm6QI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phone\": \"22\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/30d3c0f9-bef8-4a15-8f39-69bfb60ae5cc",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"30d3c0f9-bef8-4a15-8f39-69bfb60ae5cc"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
